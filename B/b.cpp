@@ -23,9 +23,16 @@ using vll = vector<ll>;
 
 void solve() {
     int N; cin >> N;
-    vector<int> A(N); for (auto& a : A) cin >> a;
+    vector<vector<int>> A(N);
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < i; j++) {
+            int x; cin >> x;
+            A[i].push_back(j);
+        }
+    }
     debug(A);
-    cout << A[N] << "\n";
+    debug(sz(A) + sz(A) * sz(A));
+    cout << A[N][0] << '\n';
 }
 
 signed main() {
