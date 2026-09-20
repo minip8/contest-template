@@ -51,6 +51,6 @@ Anything in a submitted `.cpp` must compile standalone on a judge that has neith
 
 `headers/debug.h` provides `debug(a, b, ...)`, which prints `LINE: [a = ... || b = ...]` to stderr. It handles containers, nested containers (as a numbered table), pairs, tuples, and stack/queue/priority_queue, and splits the argument names itself by scanning `#__VA_ARGS__` for top-level commas — so an unparenthesized comma inside a template argument list (e.g. `map<int,int>{}` as a literal argument) is the one thing that confuses it.
 
-Keep the template's short aliases (`all`, `sz`, `pb`, `fi`, `se`, `ll`, `pii`, `vi`, ...) rather than inventing new ones, and keep solutions in `solve()` with the multi-test loop in `main` — uncomment `cin >> t` when the problem needs it. Don't put `using namespace __gnu_pbds;` in a solution file; name the types explicitly.
+Keep the template's short aliases (`all`, `sz`, `pb`, `fi`, `se`, `ll`, `pii`, `vi`, ...) rather than inventing new ones, and keep solutions in `solve()` with the multi-test loop in `main` — uncomment `cin >> t` when the problem needs it.
 
 There is no `.gitignore`, so `pch/` and the compiled binaries show up as untracked — leave them out of commits, or run `make clean` first.
