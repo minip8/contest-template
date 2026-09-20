@@ -1,9 +1,13 @@
 {
     "clangd.enable": false,
     "C_Cpp.default.intelliSenseMode": "linux-gcc-x64",
-    "C_Cpp.default.compilerPath": "/usr/lib/gcc/x86_64-linux-gnu/13",
-    "C_Cpp.default.compileCommands": [
-        
-        ""
+    "C_Cpp.default.compilerPath": "/usr/bin/g++-13",
+    "C_Cpp.default.cppStandard": "c++20",
+    "C_Cpp.default.defines": [
+        "LOCAL"
+    ],
+    "C_Cpp.default.includePath": [
+        "${workspaceFolder}/headers",
+        "${workspaceFolder}/pch"
     ]
 }

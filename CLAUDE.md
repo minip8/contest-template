@@ -35,7 +35,7 @@ The root `Makefile` copies the real `bits/stdc++.h` to `pch/bits/stdc++.h`, appe
 - The PCH is only used if a translation unit compiles with **identical** flags — `-Winvalid-pch` warns when it silently falls back. Changing `CXXFLAGS` means the PCH rebuilds; don't add per-problem flags.
 - pb_ds is already in the PCH, so `#include <ext/pb_ds/...>` in a source file costs nothing locally, but must still be written out explicitly because the judge has no PCH.
 
-`compile_flags.txt` mirrors these flags for clangd, but `.vscode/settings.json` disables clangd in favour of Microsoft IntelliSense.
+`compile_flags.txt` mirrors these flags for clangd, but `.vscode/settings.json` disables clangd in favour of Microsoft IntelliSense (cpptools), which does **not** read `compile_flags.txt` — its copy of the flags lives in the `C_Cpp.default.*` keys of that settings file, so a change to `CXXFLAGS` that affects parsing (the standard, `-DLOCAL`, the `-I` paths) has to be mirrored there by hand.
 
 ## Source conventions
 
