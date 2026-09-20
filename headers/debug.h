@@ -4,8 +4,7 @@ using namespace std;
 
 namespace dbg {
 
-template <class T>
-concept iter = requires(T &x) { begin(x); } && !is_convertible_v<T, string_view>;
+template <class T> concept iter = ranges::range<T> && !is_convertible_v<T, string_view>;
 
 /* pair and tuple share the get<0> branch; string falls through to cerr << */
 void pr(auto &&x) {
