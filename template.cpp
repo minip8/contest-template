@@ -22,7 +22,7 @@ using vi = vector<int>;
 using vll = vector<ll>;
 
 void solve() {
-
+    
 }
 
 signed main() {
