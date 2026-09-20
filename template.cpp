@@ -12,7 +12,6 @@
 #define se second
 
 using namespace std;
-using namespace __gnu_pbds;
 
 using ll = long long;
 using dd = double;
@@ -23,7 +22,7 @@ using vi = vector<int>;
 using vll = vector<ll>;
 
 void solve() {
-    
+
 }
 
 signed main() {
