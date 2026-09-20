@@ -36,14 +36,13 @@ void pr(auto &&x) {
         cerr << x;
 }
 
-/* splits #__VA_ARGS__ on commas that aren't nested inside ( { < */
+/* splits #__VA_ARGS__ on commas that aren't nested inside ( { [ */
 void prn(const char *s, auto &&h, auto &&...t) {
     int i = 0, b = 0;
-    for (; s[i] && (s[i] != ',' || b); i++)
-        b += (s[i] == '(' || s[i] == '{' || s[i] == '<') - (s[i] == ')' || s[i] == '}' || s[i] == '>');
+    for (; s[i] && (s[i] != ',' || b); i++) b += !!strchr("({[", s[i]) - !!strchr(")}]", s[i]);
     cerr.write(s, i) << " = ";
     pr(h);
-    if constexpr (sizeof...(t)) cerr << " ||", prn(s + i + 1, t...);
+    if constexpr (sizeof...(t)) cerr << " ||", prn(s + i + !!s[i], t...);
     else cerr << "]\n";
 }
 

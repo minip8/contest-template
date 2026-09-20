@@ -49,7 +49,7 @@ Anything in a submitted `.cpp` must compile standalone on a judge that has neith
 #endif
 ```
 
-`headers/debug.h` provides `debug(a, b, ...)`, which prints `LINE: [a = ... || b = ...]` to stderr. It handles containers, nested containers (as a numbered table), pairs, tuples, and stack/queue/priority_queue, and splits the argument names itself by scanning `#__VA_ARGS__` for commas that aren't nested inside `(`, `{` or `<`. Since `<` counts as an opener, a comparison operator in an argument (`debug(a < b, x)`) leaves the depth unbalanced and misaligns every name after it — wrap it in parens. Values print unquoted: strings and chars are bare, bools are `1`/`0`.
+`headers/debug.h` provides `debug(a, b, ...)`, which prints `LINE: [a = ... || b = ...]` to stderr. It handles containers, nested containers (as a numbered table), pairs, tuples, and stack/queue/priority_queue, and splits the argument names itself by scanning `#__VA_ARGS__` for commas that aren't nested inside `(`, `{` or `[`. Angle brackets are deliberately **not** counted, so shifts and comparisons (`debug(1 << k, x)`, `debug(a < b, x)`) split correctly. The cost is that a literal template type containing a comma (`debug(map<int,int>{{1,2}})`) splits mid-type and mangles the displayed *name*; the values stay correct. Name the variable first if you hit it. Values print unquoted: strings and chars are bare, bools are `1`/`0`.
 
 Keep the template's short aliases (`all`, `sz`, `pb`, `fi`, `se`, `ll`, `pii`, `vi`, ...) rather than inventing new ones, and keep solutions in `solve()` with the multi-test loop in `main` — uncomment `cin >> t` when the problem needs it.
 
