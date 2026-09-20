@@ -49,7 +49,7 @@ Anything in a submitted `.cpp` must compile standalone on a judge that has neith
 #endif
 ```
 
-`headers/debug.h` provides `debug(a, b, ...)`, which prints `LINE: [a = ... || b = ...]` to stderr. It handles containers, nested containers (as a numbered table), pairs, tuples, and stack/queue/priority_queue, and splits the argument names itself by scanning `#__VA_ARGS__` for top-level commas — so an unparenthesized comma inside a template argument list (e.g. `map<int,int>{}` as a literal argument) is the one thing that confuses it.
+`headers/debug.h` provides `debug(a, b, ...)`, which prints `LINE: [a = ... || b = ...]` to stderr. It handles containers, nested containers (as a numbered table), pairs, tuples, and stack/queue/priority_queue, and splits the argument names itself by scanning `#__VA_ARGS__` for commas that aren't nested inside `(`, `{` or `<`. Since `<` counts as an opener, a comparison operator in an argument (`debug(a < b, x)`) leaves the depth unbalanced and misaligns every name after it — wrap it in parens. Values print unquoted: strings and chars are bare, bools are `1`/`0`.
 
 Keep the template's short aliases (`all`, `sz`, `pb`, `fi`, `se`, `ll`, `pii`, `vi`, ...) rather than inventing new ones, and keep solutions in `solve()` with the multi-test loop in `main` — uncomment `cin >> t` when the problem needs it.
 

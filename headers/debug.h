@@ -7,16 +7,10 @@ namespace dbg {
 template <class T>
 concept iter = requires(T &x) { begin(x); } && !is_convertible_v<T, string_view>;
 
+/* pair and tuple share the get<0> branch; string falls through to cerr << */
 void pr(auto &&x) {
-    using T = remove_cvref_t<decltype(x)>;
-    if constexpr (is_convertible_v<T, string_view>)
-        cerr << '"' << x << '"';
-    else if constexpr (is_same_v<T, char>)
-        cerr << '\'' << x << '\'';
-    else if constexpr (is_same_v<T, bool>)
-        cerr << (x ? 'T' : 'F');
-    else if constexpr (iter<T>) {
-        int f = 0;
+    [[maybe_unused]] int f = 0;
+    if constexpr (iter<remove_cvref_t<decltype(x)>>) {
         if constexpr (iter<remove_cvref_t<decltype(*begin(x))>>) { /* iterable of iterables */
             cerr << "\n~~~~~\n";
             for (auto &&i : x) cerr << setw(3) << left << f++, pr(i), cerr << '\n';
@@ -27,19 +21,14 @@ void pr(auto &&x) {
             cerr << '}';
         }
     } else if constexpr (requires { x.pop(); }) { /* stack, queue, priority_queue */
-        auto t = x;
-        int f = 0;
         cerr << '{';
-        for (; !t.empty(); t.pop()) {
-            cerr << (f++ ? "," : "");
+        for (auto t = x; !t.empty(); t.pop(), f++) {
+            cerr << (f ? "," : "");
             if constexpr (requires { t.top(); }) pr(t.top());
             else pr(t.front());
         }
         cerr << '}';
-    } else if constexpr (requires { x.first; })
-        cerr << '(', pr(x.first), cerr << ',', pr(x.second), cerr << ')';
-    else if constexpr (requires { get<0>(x); }) {
-        int f = 0;
+    } else if constexpr (requires { get<0>(x); }) {
         cerr << '(';
         apply([&](auto &&...a) { ((cerr << (f++ ? "," : ""), pr(a)), ...); }, x);
         cerr << ')';
