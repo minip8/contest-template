@@ -12,7 +12,6 @@
 #define se second
 
 using namespace std;
-using namespace __gnu_pbds;
 
 using ll = long long;
 using dd = double;
