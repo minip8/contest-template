@@ -1,5 +1,9 @@
 {
     "clangd.enable": false,
     "C_Cpp.default.intelliSenseMode": "linux-gcc-x64",
-    "C_Cpp.default.compilerPath": "/usr/lib/gcc/x86_64-linux-gnu/13"
+    "C_Cpp.default.compilerPath": "/usr/lib/gcc/x86_64-linux-gnu/13",
+    "C_Cpp.default.compileCommands": [
+        
+        ""
+    ]
 }
