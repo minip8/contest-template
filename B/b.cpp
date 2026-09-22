@@ -30,6 +30,7 @@ void solve() {
             A[i].push_back(j);
         }
     }
+    debug(A);
     debug(sz(A) + sz(A) * sz(A) + 67);
     cout << A[N][0] << '\n';
 }
