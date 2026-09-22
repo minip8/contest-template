@@ -1,3 +1,4 @@
+# e36766 - hash_alt.sh
 # contest root Makefile; each problem dir's Makefile is just `include ../Makefile`
 # in a problem dir: `make x` builds ./x from x.cpp
 # at contest start run `make` here once to build the precompiled header
@@ -5,7 +6,7 @@
 ROOT := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 CXX      = g++-13
-CXXFLAGS = -std=c++20 -DLOCAL -g -O2 -Wall -Wextra -pedantic -Wshadow -Wfloat-equal -Wconversion -Wlogical-op -Wshift-overflow=2 -Wduplicated-cond -Wcast-qual -Wcast-align -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC -fsanitize=address -fsanitize=undefined
+CXXFLAGS = -std=c++20 -DLOCAL -Og -Wall -Wextra -pedantic -Wshadow -Wfloat-equal -Wconversion -Wlogical-op -Wshift-overflow=2 -Wduplicated-cond -Wcast-qual -Wcast-align -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC -fsanitize=address -fsanitize=undefined
 CXXFLAGS += -I$(ROOT)pch -I$(ROOT)headers -I$(ROOT) -Winvalid-pch
 
 # gcc uses pch/bits/stdc++.h.gch in place of <bits/stdc++.h> if it was built

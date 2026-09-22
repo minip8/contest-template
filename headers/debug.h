@@ -1,3 +1,5 @@
+/* dac42a - kactl hash.sh */
+/* 79a7b0 - claude hash_alt.sh */
 #pragma once
 #include <bits/stdc++.h>
 using namespace std;
