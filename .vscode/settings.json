@@ -7,7 +7,6 @@
         "LOCAL"
     ],
     "C_Cpp.default.includePath": [
-        "${workspaceFolder}/headers",
-        "${workspaceFolder}/pch"
+        "${workspaceFolder}/template/headers"
     ]
 }
