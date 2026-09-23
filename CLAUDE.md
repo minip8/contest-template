@@ -24,7 +24,7 @@ There is no test-runner script and no lint step; samples are checked by hand wit
 
 `g++-13`, `-std=c++20`, with `-DLOCAL`, `-Og`, `-Wall -Wextra`, `_GLIBCXX_DEBUG`, and ASan+UBSan. Local builds are intentionally slow and loud; judge submissions are the plain `.cpp` text.
 
-There is no precompiled header, so every build recompiles `<bits/stdc++.h>` from scratch. The first line of `template/Makefile` is its `hash_alt.sh` checksum (for checking a hand-typed copy) — recompute it after any edit to the Makefile.
+There is no precompiled header, so every build recompiles `<bits/stdc++.h>` from scratch.
 
 `compile_flags.txt` mirrors these flags for clangd, but `.vscode/settings.json` disables clangd in favour of Microsoft IntelliSense (cpptools), which does **not** read `compile_flags.txt` — its copy of the flags lives in the `C_Cpp.default.*` keys of that settings file, so a change to `CXXFLAGS` that affects parsing (the standard, `-DLOCAL`, the `-I` paths) has to be mirrored there by hand.
 
@@ -42,7 +42,7 @@ Anything in a submitted `.cpp` must compile standalone on a judge that has neith
 #endif
 ```
 
-`headers/debug.h` provides `debug(a, b, ...)`, which prints `LINE: [a, b] = <a> <b>` to stderr: the argument text once, verbatim, then each value space-separated. It recurses through containers (nested ones print inline as `{{..},{..}}`), pairs and tuples. stack/queue/priority_queue are not supported and fail to compile — copy into a vector first. Values print unquoted: strings and chars are bare, bools are `1`/`0`. The two comment lines at the top are its `hash.sh` / `hash_alt.sh` checksums (the `hash_alt.sh` one is computed without those two lines) — recompute them after any edit.
+`headers/debug.h` provides `debug(a, b, ...)`, which prints `LINE: [a, b] = <a> <b>` to stderr: the argument text once, verbatim, then each value space-separated. It recurses through containers (nested ones print inline as `{{..},{..}}`), pairs and tuples. stack/queue/priority_queue are not supported and fail to compile — copy into a vector first. Values print unquoted: strings and chars are bare, bools are `1`/`0`. The comment line at the top is its `hash.sh` checksum — recompute it after any edit.
 
 Keep the template's short aliases (`all`, `sz`, `pb`, `fi`, `se`, `ll`, `pii`, `vi`, ...) rather than inventing new ones, and keep solutions in `solve()` with the multi-test loop in `main` — uncomment `cin >> t` when the problem needs it.
 

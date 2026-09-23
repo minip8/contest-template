@@ -1,5 +1,4 @@
 /* 635cef - kactl hash.sh */
-/* 01f7ad - claude hash_alt.sh */
 #pragma once
 #include <bits/stdc++.h>
 using namespace std;

@@ -1,4 +1,3 @@
-# 3b9864 - hash_alt.sh
 # contest root Makefile; each problem dir's Makefile is just `include ../Makefile`
 # in a problem dir: `make x` builds ./x from x.cpp (make's built-in %: %.cpp rule)
 
