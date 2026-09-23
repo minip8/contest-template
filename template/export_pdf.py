@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # Export the Makefile, template and headers/ to a KACTL-style PDF (landscape, 3 columns).
-# usage: ./export_pdf.py [-o template.pdf] [-t "Team Name"]
+# The page header lists the sections on that page, so it can be appended to the KACTL notes.
+# usage: ./export_pdf.py [-o template.pdf] [-p FIRST_PAGE]
 import argparse, re, shutil, subprocess, tempfile
 from pathlib import Path
 
@@ -11,13 +12,21 @@ PREAMBLE = r"""
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage[margin=0.9cm,top=1.6cm,headsep=0.25cm]{geometry}
-\usepackage{multicol,fancyhdr,listings,xcolor}
+\usepackage{multicol,fancyhdr,listings,xcolor,etoolbox}
 \setlength{\columnsep}{0.4cm}
 \setlength{\columnseprule}{0.2pt}
 \setlength{\parindent}{0pt}
 \pagestyle{fancy}
 \fancyhf{}
-\lhead{\textbf{@TEAM@}}
+% \kactlsec{page}{name} lines in the .aux collect each page's section names for the header
+\makeatletter
+\newcommand{\kactlsec}[2]{%
+  \ifcsundef{kactl@p#1}{\csgdef{kactl@p#1}{#2}}{%
+    \ifcsstring{kactl@l#1}{#2}{}{\csgappto{kactl@p#1}{, #2}}}%
+  \csgdef{kactl@l#1}{#2}}
+\newcommand{\kactlmark}[1]{\protected@write\@auxout{}{\string\kactlsec{\thepage}{#1}}}
+\makeatother
+\lhead{\textbf{\ifcsdef{kactl@p\thepage}{\csuse{kactl@p\thepage}}{}}}
 \rhead{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 \definecolor{cmt}{gray}{0.35}
@@ -40,11 +49,12 @@ PREAMBLE = r"""
   morecomment=[l]{\#},
   morekeywords={include},
 }
-\newcommand{\kactlfile}[2]{%
-  \par\noindent\rule{\linewidth}{0.4pt}\par\nopagebreak
+\newcommand{\kactlfile}[3]{%
+  \par\kactlmark{#3}\noindent\rule{\linewidth}{0.4pt}\par\nopagebreak
   \noindent\textbf{\small #1}\hfill{\ttfamily\scriptsize #2}\par\nopagebreak
 }
 \begin{document}
+\setcounter{page}{@PAGE@}
 \begin{multicols*}{3}
 """
 
@@ -72,7 +82,7 @@ def tex_escape(s):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("-o", "--output", default=str(ROOT / "template.pdf"))
-    ap.add_argument("-t", "--team", default="Team Reference")
+    ap.add_argument("-p", "--first-page", type=int, default=1, help="number of the first page")
     args = ap.parse_args()
 
     files = FILES + [(str(p.relative_to(ROOT)), "C++") for p in sorted((ROOT / "headers").glob("*.h"))]
@@ -89,16 +99,19 @@ def main():
             h = cpp_hash(text) if lang == "C++" else ""
             src = tmp / f"f{i}.txt"
             src.write_text(text)
-            body.append(f"\\kactlfile{{{tex_escape(name)}}}{{{h}}}\n"
-                        f"\\lstinputlisting[language={{{lang}}}]{{{src.name}}}\n")
+            sec = tex_escape(Path(name).stem)  # header name: Makefile, template, debug, ...
+            body.append(f"\\kactlfile{{{tex_escape(name)}}}{{{h}}}{{{sec}}}\n"
+                        f"\\lstinputlisting[language={{{lang}}}]{{{src.name}}}\n"
+                        f"\\kactlmark{{{sec}}}\n")  # again at the end, for files spilling onto the next page
 
-        tex = PREAMBLE.replace("@TEAM@", tex_escape(args.team)) + "".join(body) + END
+        tex = PREAMBLE.replace("@PAGE@", str(args.first_page)) + "".join(body) + END
         (tmp / "doc.tex").write_text(tex)
-        r = subprocess.run(["pdflatex", "-interaction=nonstopmode", "-halt-on-error", "doc.tex"],
-                           cwd=tmp, capture_output=True, text=True)
-        if r.returncode:
-            print(r.stdout[-3000:])
-            raise SystemExit("pdflatex failed")
+        for _ in range(2):  # the header reads section names from the previous pass's .aux
+            r = subprocess.run(["pdflatex", "-interaction=nonstopmode", "-halt-on-error", "doc.tex"],
+                               cwd=tmp, capture_output=True, text=True)
+            if r.returncode:
+                print(r.stdout[-3000:])
+                raise SystemExit("pdflatex failed")
         shutil.copy(tmp / "doc.pdf", args.output)
     print(f"wrote {args.output}")
 
