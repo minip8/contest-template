@@ -22,7 +22,7 @@ There is no test-runner script and no lint step; samples are checked by hand wit
 
 ## Build setup
 
-`g++-13`, `-std=c++20`, with `-DLOCAL`, heavy warnings, `_GLIBCXX_DEBUG`, and ASan+UBSan. Local builds are intentionally slow and loud; judge submissions are the plain `.cpp` text.
+`g++-13`, `-std=c++20`, with `-DLOCAL`, `-Og`, `-Wall -Wextra`, `_GLIBCXX_DEBUG`, and ASan+UBSan. Local builds are intentionally slow and loud; judge submissions are the plain `.cpp` text.
 
 There is no precompiled header, so every build recompiles `<bits/stdc++.h>` from scratch. The first line of `template/Makefile` is its `hash_alt.sh` checksum (for checking a hand-typed copy) — recompute it after any edit to the Makefile.
 
