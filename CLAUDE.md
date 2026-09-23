@@ -16,7 +16,7 @@ cd A && make a          # build A/a.cpp -> A/a
 ./a < 1.in | diff - 1.out
 ```
 
-`make clean` (from any problem dir) deletes every problem binary; a bare `make` does nothing. There is no test-runner script and no lint step; samples are checked by hand with `diff`.
+There is no test-runner script and no lint step; samples are checked by hand with `diff`.
 
 `.zshrc` sets `ASAN_OPTIONS`/`UBSAN_OPTIONS` so sanitizer aborts print a stack trace — source it if crashes are silent.
 
@@ -46,4 +46,4 @@ Anything in a submitted `.cpp` must compile standalone on a judge that has neith
 
 Keep the template's short aliases (`all`, `sz`, `pb`, `fi`, `se`, `ll`, `pii`, `vi`, ...) rather than inventing new ones, and keep solutions in `solve()` with the multi-test loop in `main` — uncomment `cin >> t` when the problem needs it.
 
-There is no `.gitignore`, so compiled binaries show up as untracked — leave them out of commits, or run `make clean` first.
+There is no `.gitignore`, so compiled binaries show up as untracked — leave them out of commits.
